@@ -4,6 +4,13 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace DeweyHomeMovieApi.Models;
 
 
+
+public class VideoTimeStamp
+{
+  public string? Description { get; set; }
+  public string? TimeStamp { get; set; }
+}
+
 public class Movie
 {
   [BsonId]
@@ -12,4 +19,6 @@ public class Movie
   public string? Title { get; set; }
 
   public string? FilePath { get; set; }
+
+  public List<VideoTimeStamp>? VideoTimeStamps { get; set; }
 }

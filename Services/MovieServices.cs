@@ -38,6 +38,7 @@ public class MovieServices
 
   public async Task<Movie> Insert(Movie movie)
   {
+    Console.WriteLine(movie.VideoTimeStamps.Count);
     await _movieCollection.InsertOneAsync(movie);
     return movie;
   }
