@@ -21,7 +21,9 @@ public class Movie
   public string? FilePath { get; set; }
   public string? Url { get; set; }
 
-  public int Version { get; set; } = 1;
+  public int Version { get; set; } = 2;
+
+  public List<String>? Tags { get; set; }
 
   public List<VideoTimeStamp>? VideoTimeStamps { get; set; }
 }
