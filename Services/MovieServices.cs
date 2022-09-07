@@ -23,7 +23,6 @@ public class MovieServices
         settings.Value.MovieCollectionName);
     _testCollection = mongoDatabase.GetCollection<object>(
         settings.Value.TestCollectionName);
-
   }
 
   public async Task<List<object>> GetAllTestDocs()
@@ -33,6 +32,7 @@ public class MovieServices
 
   public async Task<List<Movie>> Get()
   {
+
     return await _movieCollection.Find(new BsonDocument()).ToListAsync();
   }
 
