@@ -26,30 +26,25 @@ namespace DeweyHomeMovieApi
     public async Task<ActionResult> Get()
     {
       var movies = await this._movieService.Get();
-      var rv = movies
-                  .Select(s =>
-                      {
-                        var urlRequest = new GetPreSignedUrlRequest()
-                        {
-                          BucketName = Configuration["AWS:BucketName"],
-                          Key = s.Key,
-                          Expires = DateTime.UtcNow.AddMinutes(10),
-                        };
-                        return new
-                        {
-                          s.Title,
-                          s.Length,
-                          s.Tags,
-                          s.Id,
-                          s.Url,
-                          s.Version,
-                          s.VideoTimeStamps,
-                          videoUrl = _s3Client.GetPreSignedURL(urlRequest)
-                        };
-                      });
-      return Ok(rv);
+      return Ok(movies);
     }
 
+    // GET: api/Movies/string-id/video
+    [HttpGet("{id}/video")]
+    public async Task<ActionResult> GetVideo(string id)
+    {
+      Console.WriteLine(id);
+      var movie = await this._movieService.Get(id);
+      // Console.WriteLine(movie.Key);
+
+      var urlRequest = new GetPreSignedUrlRequest()
+      {
+        BucketName = Configuration["AWS:BucketName"],
+        Key = movie.AwsKey,
+        Expires = DateTime.UtcNow.AddMinutes(10),
+      };
+      return Ok(new { id, VideoUrl = _s3Client.GetPreSignedURL(urlRequest) });
+    }
 
     // POST: api/Movies
     [HttpPost]

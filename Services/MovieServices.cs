@@ -35,6 +35,12 @@ public class MovieServices
 
     return await _movieCollection.Find(new BsonDocument()).ToListAsync();
   }
+  public async Task<Movie> Get(string id)
+  {
+    var _id = new ObjectId(id);
+
+    return await _movieCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+  }
 
   public async Task<Movie> Insert(Movie movie)
   {
