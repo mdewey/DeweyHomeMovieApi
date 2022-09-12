@@ -35,7 +35,6 @@ namespace DeweyHomeMovieApi
     {
       Console.WriteLine(id);
       var movie = await this._movieService.Get(id);
-      // Console.WriteLine(movie.Key);
 
       var urlRequest = new GetPreSignedUrlRequest()
       {

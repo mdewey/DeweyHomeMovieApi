@@ -33,8 +33,11 @@ public class Movie
   public string? Length { get; set; }
 
 
+  [BsonRepresentation(BsonType.String)]
+  public string? ImageUrl { get; set; }
+
   [BsonRepresentation(BsonType.Int32)]
-  public int Version { get; set; } = 5;
+  public int Version { get; set; } = 6;
 
   public IEnumerable<String>? Tags { get; set; }
 
