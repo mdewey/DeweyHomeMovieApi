@@ -23,6 +23,8 @@ public class Movie
   [BsonRepresentation(BsonType.String)]
   public string? AwsKey { get; set; }
 
+  public string? AwsImageKey { get; set; }
+
   [BsonRepresentation(BsonType.String)]
   public string? FilePath { get; set; }
 
@@ -37,7 +39,7 @@ public class Movie
   public string? ImageUrl { get; set; }
 
   [BsonRepresentation(BsonType.Int32)]
-  public int Version { get; set; } = 6;
+  public int Version { get; set; } = 7;
 
   public IEnumerable<String>? Tags { get; set; }
 

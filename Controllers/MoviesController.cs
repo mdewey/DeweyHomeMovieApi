@@ -45,6 +45,18 @@ namespace DeweyHomeMovieApi
       return Ok(new { id, VideoUrl = _s3Client.GetPreSignedURL(urlRequest) });
     }
 
+    [HttpGet("{id}/image")]
+    public async Task<ActionResult> GetImage(string id)
+    {
+      Console.WriteLine(id);
+      var movie = await this._movieService.Get(id);
+      var request = new GetObjectRequest { BucketName = Configuration["AWS:BucketName"], Key = movie.AwsImageKey };
+      var response = await this._s3Client.GetObjectAsync(request);
+      return new FileStreamResult(response.ResponseStream, "image/jpeg") { FileDownloadName = movie.AwsImageKey };
+
+    }
+
+
     // POST: api/Movies
     [HttpPost]
     public async Task<ActionResult> Post(Movie movie)
