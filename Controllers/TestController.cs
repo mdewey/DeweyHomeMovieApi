@@ -25,6 +25,12 @@ namespace DeweyHomeMovieApi
       return Ok(await this._movieService.GetAllTestDocs());
     }
 
+    [HttpGet("ping")]
+    public ActionResult Ping()
+    {
+      return Ok("pong");
+    }
+
     [HttpGet("get-all")]
     public async Task<IActionResult> GetAllBucketAsync()
     {
