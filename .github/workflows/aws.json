@@ -1,0 +1,16 @@
+{
+  "repository": {
+    "repositoryArn": "arn:aws:ecr:us-east-1:828784865144:repository/dewey-movies-api-images",
+    "registryId": "828784865144",
+    "repositoryName": "dewey-movies-api-images",
+    "repositoryUri": "828784865144.dkr.ecr.us-east-1.amazonaws.com/dewey-movies-api-images",
+    "createdAt": "2022-09-25T09:40:59-04:00",
+    "imageTagMutability": "MUTABLE",
+    "imageScanningConfiguration": {
+      "scanOnPush": false
+    },
+    "encryptionConfiguration": {
+      "encryptionType": "AES256"
+    }
+  }
+}
