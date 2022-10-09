@@ -7,13 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
-  config.AddJsonFile($"appsettings.local.json", optional: true);
+  Console.WriteLine(hostingContext.HostingEnvironment.EnvironmentName);
+  config.AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true);
 
 });
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

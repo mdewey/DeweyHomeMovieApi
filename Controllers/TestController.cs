@@ -12,11 +12,13 @@ namespace DeweyHomeMovieApi
 
     private readonly MovieServices _movieService;
     private readonly IAmazonS3 _s3Client;
+    private readonly IConfiguration _configuration;
 
-    public TestController(MovieServices service, IAmazonS3 s3Client)
+    public TestController(IConfiguration configuration, MovieServices service, IAmazonS3 s3Client)
     {
       _s3Client = s3Client;
       _movieService = service;
+      _configuration = configuration;
     }
 
     [HttpGet]
@@ -38,6 +40,24 @@ namespace DeweyHomeMovieApi
       var buckets = data.Buckets.Select(b => { return b.BucketName; });
       return Ok(buckets);
     }
+
+
+    [HttpGet("get-configured-bucket")]
+    public async Task<IActionResult> GetConfiguredBucketAsync()
+    {
+      var bucket = _configuration["AWS:BucketName"];
+      try
+      {
+        var data = await _s3Client.ListObjectsAsync(bucket);
+        var buckets = data.S3Objects.Select(b => { return b.Key; });
+        return Ok(new { bucket, buckets });
+      }
+      catch (Exception e)
+      {
+        return Ok(new { bucket, e.Message });
+      }
+    }
+
     public class S3ObjectDto
     {
       public string? Name { get; set; }
