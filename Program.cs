@@ -42,7 +42,7 @@ app.UseSwaggerUI();
 
 app.UseCors("video-sites");
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
