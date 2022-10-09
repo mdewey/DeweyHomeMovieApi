@@ -31,6 +31,7 @@ jobs:
       
   build_production_docker:
     runs-on: ubuntu-latest
+    needs: app_ready
     permissions:
       packages: write
     steps:
@@ -69,7 +70,7 @@ jobs:
     permissions:
       contents: none
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_production_docker
     environment:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
