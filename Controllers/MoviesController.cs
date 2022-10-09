@@ -38,7 +38,7 @@ namespace DeweyHomeMovieApi
 
       var urlRequest = new GetPreSignedUrlRequest()
       {
-        BucketName = Configuration["AWS:BucketName"],
+        BucketName = Configuration["AWS:BUCKET"],
         Key = movie.AwsKey,
         Expires = DateTime.UtcNow.AddMinutes(10),
       };
@@ -50,7 +50,7 @@ namespace DeweyHomeMovieApi
     {
       Console.WriteLine(id);
       var movie = await this._movieService.Get(id);
-      var request = new GetObjectRequest { BucketName = Configuration["AWS:BucketName"], Key = movie.AwsImageKey };
+      var request = new GetObjectRequest { BucketName = Configuration["AWS:BUCKET"], Key = movie.AwsImageKey };
       var response = await this._s3Client.GetObjectAsync(request);
       return new FileStreamResult(response.ResponseStream, "image/jpeg") { FileDownloadName = movie.AwsImageKey };
 

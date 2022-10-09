@@ -51,7 +51,7 @@ namespace DeweyHomeMovieApi
     [HttpGet("get-configured-bucket")]
     public async Task<IActionResult> GetConfiguredBucketAsync()
     {
-      var bucket = _configuration["AWS:BucketName"];
+      var bucket = _configuration["AWS:BUCKET"];
       try
       {
         var data = await _s3Client.ListObjectsAsync(bucket);
