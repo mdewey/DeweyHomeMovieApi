@@ -44,9 +44,6 @@ namespace DeweyHomeMovieApi
     [HttpGet("get-env")]
     public ActionResult GetEnv()
     {
-
-
-
       return Ok(((IConfigurationRoot)_configuration).GetDebugView());
     }
 
