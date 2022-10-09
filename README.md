@@ -1,8 +1,11 @@
 # The Details
 
-- complex structure
-- update to use env variables
-- deploy to AWS
+Next:
+
+- Set env vars in Azure
+- clean up user-secrets
+
+-- things?
 
 - mp4s to AWS S3
 - API as elascic beanstalk
