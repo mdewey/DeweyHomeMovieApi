@@ -7,9 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
-  Console.WriteLine(hostingContext.HostingEnvironment.EnvironmentName);
   config.AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true);
-
 });
 
 
