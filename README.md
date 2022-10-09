@@ -2,6 +2,11 @@
 
 Next:
 
+- get new AWS creds for prodcution
+  -access id
+  - secret key
+  - bucket
+
 - the mongo db stuff
 - set up front end somewhere
 -- things?
