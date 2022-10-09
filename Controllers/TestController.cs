@@ -41,6 +41,15 @@ namespace DeweyHomeMovieApi
       return Ok(buckets);
     }
 
+    [HttpGet("get-env")]
+    public ActionResult GetEnv()
+    {
+
+
+
+      return Ok(((IConfigurationRoot)_configuration).GetDebugView());
+    }
+
 
     [HttpGet("get-configured-bucket")]
     public async Task<IActionResult> GetConfiguredBucketAsync()
