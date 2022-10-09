@@ -2,9 +2,8 @@
 
 Next:
 
-- Set env vars in Azure
-- clean up user-secrets
-
+- the mongo db stuff
+- set up front end somewhere
 -- things?
 
 - mp4s to AWS S3
