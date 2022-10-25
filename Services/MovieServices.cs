@@ -10,6 +10,8 @@ public class MovieServices
   private readonly IMongoCollection<Movie> _movieCollection;
   private readonly IMongoCollection<object> _testCollection;
 
+  private readonly MoviesDatabaseSettings _settings;
+
   public MovieServices(
       IOptions<MoviesDatabaseSettings> settings)
   {
@@ -23,6 +25,12 @@ public class MovieServices
         settings.Value.MovieCollectionName);
     _testCollection = mongoDatabase.GetCollection<object>(
         settings.Value.TestCollectionName);
+    _settings = settings.Value;
+  }
+
+  public MoviesDatabaseSettings GetDatabase()
+  {
+    return this._settings;
   }
 
   public async Task<List<object>> GetAllTestDocs()

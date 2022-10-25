@@ -21,10 +21,16 @@ namespace DeweyHomeMovieApi
       _configuration = configuration;
     }
 
-    [HttpGet]
+    [HttpGet("mongo/testdocs")]
     public async Task<ActionResult> Get()
     {
       return Ok(await this._movieService.GetAllTestDocs());
+    }
+
+    [HttpGet("mongo/database")]
+    public ActionResult GetDatabase()
+    {
+      return Ok(this._movieService.GetDatabase());
     }
 
     [HttpGet("ping")]
