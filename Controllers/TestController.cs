@@ -10,37 +10,15 @@ namespace DeweyHomeMovieApi
   public class TestController : ControllerBase
   {
 
-    private readonly MovieServices _movieService;
-    private readonly MovieServiceV2 _movieServiceV2;
+    private readonly MovieService _movieServiceV2;
     private readonly IAmazonS3 _s3Client;
     private readonly IConfiguration _configuration;
 
-    public TestController(IConfiguration configuration, MovieServices service, IAmazonS3 s3Client, MovieServiceV2 serviceV2)
+    public TestController(IConfiguration configuration, IAmazonS3 s3Client, MovieService serviceV2)
     {
-      _movieService = service;
       _s3Client = s3Client;
       _movieServiceV2 = serviceV2;
       _configuration = configuration;
-    }
-
-
-    [HttpGet("mongo/testdocs")]
-    public async Task<ActionResult> Get()
-    {
-      return Ok(await this._movieService.GetAllTestDocs());
-    }
-
-    [HttpGet("mongo/database")]
-    public ActionResult GetDatabase()
-    {
-      return Ok(this._movieService.GetDatabase());
-    }
-
-
-    [HttpGet("dynamo/testdocs")]
-    public async Task<ActionResult> GetDynamoTestDocs()
-    {
-      return Ok(await this._movieServiceV2.GetAllTestDocs());
     }
 
     [HttpGet("ping")]
@@ -49,7 +27,19 @@ namespace DeweyHomeMovieApi
       return Ok("pong");
     }
 
-    [HttpGet("get-all")]
+    [HttpGet("dynamo/testdocs")]
+    public async Task<ActionResult> GetDynamoTestDocs()
+    {
+      return Ok(await this._movieServiceV2.GetAllTestDocs());
+    }
+
+    [HttpGet("site/get-env")]
+    public ActionResult GetEnv()
+    {
+      return Ok(((IConfigurationRoot)_configuration).GetDebugView());
+    }
+
+    [HttpGet("aws/get-all")]
     public async Task<IActionResult> GetAllBucketAsync()
     {
       var data = await _s3Client.ListBucketsAsync();
@@ -57,14 +47,7 @@ namespace DeweyHomeMovieApi
       return Ok(buckets);
     }
 
-    [HttpGet("get-env")]
-    public ActionResult GetEnv()
-    {
-      return Ok(((IConfigurationRoot)_configuration).GetDebugView());
-    }
-
-
-    [HttpGet("get-configured-bucket")]
+    [HttpGet("aws/get-configured-bucket")]
     public async Task<IActionResult> GetConfiguredBucketAsync()
     {
       var bucket = _configuration["AWS:BUCKET"];
@@ -86,7 +69,7 @@ namespace DeweyHomeMovieApi
       public string? PresignedUrl { get; set; }
     }
 
-    [HttpGet("get-all-full")]
+    [HttpGet("aws/get-all-full")]
     public async Task<IActionResult> GetAllFilesAsync(string bucketName = "deweys-home-video-bucket-dev", string? prefix = "xyz")
     {
       var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);

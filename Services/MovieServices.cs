@@ -1,59 +1,89 @@
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
 using DeweyHomeMovieApi.Models;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace BookStoreApi.Services;
 
-
-public class MovieServices : IMovieServices
+public class MovieService : IMovieServices
 {
-  private readonly IMongoCollection<Movie> _movieCollection;
-  private readonly IMongoCollection<object> _testCollection;
+  private readonly DynamoDbSettings _settings;
 
-  private readonly MoviesDatabaseSettings _settings;
+  private readonly AmazonDynamoDBClient _dynamoClient;
 
-  public MovieServices(
-      IOptions<MoviesDatabaseSettings> settings)
+  public MovieService(
+    IOptions<DynamoDbSettings> settings)
   {
-    var mongoClient = new MongoClient(
-        settings.Value.ConnectionString);
-
-    var mongoDatabase = mongoClient.GetDatabase(
-        settings.Value.DatabaseName);
-
-    _movieCollection = mongoDatabase.GetCollection<Movie>(
-        settings.Value.MovieCollectionName);
-    _testCollection = mongoDatabase.GetCollection<object>(
-        settings.Value.TestCollectionName);
     _settings = settings.Value;
-  }
+    AmazonDynamoDBConfig clientConfig = new AmazonDynamoDBConfig();
+    clientConfig.RegionEndpoint = RegionEndpoint.USEast1;
+    _dynamoClient = new AmazonDynamoDBClient(clientConfig);
 
-  public MoviesDatabaseSettings GetDatabase()
-  {
-    return this._settings;
   }
-
-  public async Task<object> GetAllTestDocs()
-  {
-    return await _testCollection.Find(new BsonDocument()).ToListAsync();
-  }
-
   public async Task<List<Movie>> Get()
   {
 
-    return await _movieCollection.Find(new BsonDocument()).ToListAsync();
+    var request = new ScanRequest
+    {
+      TableName = _settings.MovieCollectionName,
+    };
+
+    var response = await _dynamoClient.ScanAsync(request);
+    return response.Items.Select(s => new Movie().fromAttributeList(s)).ToList();
   }
+
   public async Task<Movie> Get(string id)
   {
-    var _id = new ObjectId(id);
+    var request = new GetItemRequest
+    {
+      TableName = _settings.MovieCollectionName,
+      Key = new Dictionary<string, AttributeValue>()
+            {
+                { "id", new AttributeValue {
+                      S = id
+                  } }
+            }
 
-    return await _movieCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+    };
+
+    var response = await _dynamoClient.GetItemAsync(request);
+    var attributeList = response.Item;
+    return new Movie().fromAttributeList(attributeList);
   }
 
   public async Task<Movie> Insert(Movie movie)
   {
-    await _movieCollection.InsertOneAsync(movie);
+    var id = "movie-" + Guid.NewGuid().ToString();
+    movie.Id = id;
+    var request = new PutItemRequest
+    {
+      TableName = this._settings.MovieCollectionName,
+      Item = movie.CreateAttributeList()
+    };
+    await _dynamoClient.PutItemAsync(request);
     return movie;
+  }
+
+  public async Task<object> GetAllTestDocs()
+  {
+    var request = new GetItemRequest
+    {
+      TableName = _settings.TestCollectionName,
+      Key = new Dictionary<string, AttributeValue>()
+            {
+                { "_id", new AttributeValue {
+                      S = "test-id"
+                  } }
+            },
+
+    };
+    var response = await _dynamoClient.GetItemAsync(request);
+
+    // Check the response.
+    var attributeList = response.Item; // attribute list in the response.
+    var rv = new List<object>();
+    rv.Add(new Movie().fromAttributeList(attributeList));
+    return rv;
   }
 }

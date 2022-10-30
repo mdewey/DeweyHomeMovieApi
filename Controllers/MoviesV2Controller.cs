@@ -10,12 +10,12 @@ namespace DeweyHomeMovieApi
   [ApiController]
   public class MoviesV2Controller : ControllerBase
   {
-    private readonly MovieServiceV2 _movieService;
+    private readonly MovieService _movieService;
     private readonly IAmazonS3 _s3Client;
 
     private IConfiguration Configuration;
 
-    public MoviesV2Controller(IConfiguration _configuration, MovieServiceV2 service, IAmazonS3 s3Client)
+    public MoviesV2Controller(IConfiguration _configuration, MovieService service, IAmazonS3 s3Client)
     {
       _s3Client = s3Client;
       _movieService = service;

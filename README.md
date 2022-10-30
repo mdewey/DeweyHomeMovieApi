@@ -2,7 +2,6 @@
 
 Next:
 
-- test in production with test db
 - remove mongo stuff
 - set up prod db
 - force https
