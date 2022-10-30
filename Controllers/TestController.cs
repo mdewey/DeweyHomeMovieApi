@@ -11,15 +11,18 @@ namespace DeweyHomeMovieApi
   {
 
     private readonly MovieServices _movieService;
+    private readonly MovieServiceV2 _movieServiceV2;
     private readonly IAmazonS3 _s3Client;
     private readonly IConfiguration _configuration;
 
-    public TestController(IConfiguration configuration, MovieServices service, IAmazonS3 s3Client)
+    public TestController(IConfiguration configuration, MovieServices service, IAmazonS3 s3Client, MovieServiceV2 serviceV2)
     {
-      _s3Client = s3Client;
       _movieService = service;
+      _s3Client = s3Client;
+      _movieServiceV2 = serviceV2;
       _configuration = configuration;
     }
+
 
     [HttpGet("mongo/testdocs")]
     public async Task<ActionResult> Get()
@@ -31,6 +34,13 @@ namespace DeweyHomeMovieApi
     public ActionResult GetDatabase()
     {
       return Ok(this._movieService.GetDatabase());
+    }
+
+
+    [HttpGet("dynamo/testdocs")]
+    public async Task<ActionResult> GetDynamoTestDocs()
+    {
+      return Ok(await this._movieServiceV2.GetAllTestDocs());
     }
 
     [HttpGet("ping")]

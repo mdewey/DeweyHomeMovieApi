@@ -5,7 +5,8 @@ using MongoDB.Driver;
 
 namespace BookStoreApi.Services;
 
-public class MovieServices
+
+public class MovieServices : IMovieServices
 {
   private readonly IMongoCollection<Movie> _movieCollection;
   private readonly IMongoCollection<object> _testCollection;
@@ -33,7 +34,7 @@ public class MovieServices
     return this._settings;
   }
 
-  public async Task<List<object>> GetAllTestDocs()
+  public async Task<object> GetAllTestDocs()
   {
     return await _testCollection.Find(new BsonDocument()).ToListAsync();
   }
@@ -55,7 +56,4 @@ public class MovieServices
     await _movieCollection.InsertOneAsync(movie);
     return movie;
   }
-
-
-
 }

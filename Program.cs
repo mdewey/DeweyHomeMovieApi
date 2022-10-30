@@ -18,7 +18,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<MoviesDatabaseSettings>(
     builder.Configuration.GetSection("MoviesDatabaseSettings"));
 
+builder.Services.Configure<DynamoDbSettings>(
+    builder.Configuration.GetSection("DynamoDbSettings"));
+
+
+
+
 builder.Services.AddSingleton<MovieServices>();
+builder.Services.AddSingleton<MovieServiceV2>();
 
 builder.Services.AddCors(options =>
 {
