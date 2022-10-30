@@ -2,11 +2,8 @@
 
 Next:
 
-- Update the get picture and video endpoints
-- Test with front end locally
-- test with service locally
-- remove mongo stuff
 - test in production with test db
+- remove mongo stuff
 - set up prod db
 - force https
 - CORS and production?!?
