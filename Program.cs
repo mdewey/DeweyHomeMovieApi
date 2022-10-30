@@ -32,7 +32,10 @@ builder.Services.AddCors(options =>
   options.AddPolicy(name: "video-sites",
                     policy =>
                     {
-                      policy.WithOrigins("http://localhost:4200", "https://home.videos.markdewey.dev/");
+                      policy.WithOrigins("http://localhost:4200", "https://home.videos.markdewey.dev/")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowAnyOrigin();
 
                     });
 });
