@@ -44,8 +44,6 @@ namespace DeweyHomeMovieApi
     [HttpGet("{id}/video")]
     public async Task<ActionResult> GetVideo(string id)
     {
-      throw new NotImplementedException();
-      Console.WriteLine(id);
       var movie = await this._movieService.Get(id);
 
       var urlRequest = new GetPreSignedUrlRequest()
@@ -60,7 +58,6 @@ namespace DeweyHomeMovieApi
     [HttpGet("{id}/image")]
     public async Task<ActionResult> GetImage(string id)
     {
-      throw new NotImplementedException();
       Console.WriteLine(id);
       var movie = await this._movieService.Get(id);
       var request = new GetObjectRequest { BucketName = Configuration["AWS:BUCKET"], Key = movie.AwsImageKey };
