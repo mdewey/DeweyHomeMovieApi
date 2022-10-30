@@ -2,10 +2,10 @@
 
 Next:
 
-- remove mongo stuff
 - set up prod db
 - force https
-- CORS and production?!?
+- finalize and publish data
+- docs
 
 ## Stack
 
